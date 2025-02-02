@@ -9,8 +9,8 @@ load_dotenv()
 app = Flask(__name__)
 
 # Get the Gemini API key and endpoint from environment variables
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")  # Gemini API Key
-GEMINI_API_URL = os.getenv("GEMINI_API_URL")  # Gemini API endpoint
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")  
+GEMINI_API_URL = os.getenv("GEMINI_API_URL")  
 
 @app.route('/')
 def index():

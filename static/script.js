@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
 
-  console.log("Send button: ", sendButton); // Check if the button exists
+  console.log("Send button: ", sendButton);
   sendButton.addEventListener("click", () => {
     const message = userInput.value.trim();
     if (message) {
-      console.log("User message:", message); // Check the user input
+      console.log("User message:", message);
       appendUserMessage(message);
       userInput.value = "";
       fetchChatbotResponse(message);
@@ -25,23 +25,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to fetch chatbot response
-function fetchChatbotResponse(message) {
-  fetch("/chat", {
-    // Ensure we're calling the correct route
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ message }), // Send message as JSON
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Bot response:", data.response); // Check the response from the server
-      appendBotMessage(data.response); // Display the response in your chat window
+  function fetchChatbotResponse(message) {
+    fetch("/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message }),
     })
-    .catch((error) => console.error("Error fetching response:", error));
-}
-
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Bot response:", data.response);
+        appendBotMessage(data.response);
+      })
+      .catch((error) => console.error("Error fetching response:", error));
+  }
 
   // Function to append bot message to chat
   function appendBotMessage(message) {
@@ -55,9 +53,9 @@ function fetchChatbotResponse(message) {
   // Function to format bot response (optional)
   function formatBotResponse(response) {
     return response
-      .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Bold formatting for **text**
-      .replace(/\*(.*?)\*/g, "<i>$1</i>") // Italic formatting for *text*
-      .replace(/\n/g, "<br>"); // Newline to <br> conversion
+      .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+      .replace(/\*(.*?)\*/g, "<i>$1</i>")
+      .replace(/\n/g, "<br>");
   }
 
   // Handle file input (camera/gallery buttons)
@@ -76,7 +74,6 @@ function fetchChatbotResponse(message) {
     if (file) {
       const message = `User uploaded an image: ${file.name}`;
       appendUserMessage(message);
-      // You can send the image file to the server if needed here
     }
   });
 });
