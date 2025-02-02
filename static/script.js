@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const cameraButton = document.getElementById("camera-button");
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
-  const textArea = document.getElementById("textArea"); // Assuming this is your text area for displaying the image
+  const imageContainer = document.getElementById("image-container"); // New container for images
 
   // Ensure fileInput is set up properly
-  if (!fileInput || !textArea) {
-    console.error("fileInput or textArea element is missing.");
+  if (!fileInput || !imageContainer) {
+    console.error("fileInput or imageContainer element is missing.");
     return;
   }
 
@@ -93,9 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
         img.style.borderRadius = "8px"; // Optional, for styling
         img.alt = "User uploaded image";
 
-        // Append the image to the text area (or any other container element)
-        textArea.innerHTML = ""; // Clear the text area before adding the new image
-        textArea.appendChild(img);
+        // Append the image to the image container (instead of the textArea)
+        imageContainer.innerHTML = ""; // Clear the container before adding the new image
+        imageContainer.appendChild(img);
       };
 
       // Read the file as a data URL (this will trigger the onload function)
