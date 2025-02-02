@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle gallery input (opens the file gallery to select an image)
   galleryButton.addEventListener("click", () => {
-    fileInput.accept = "image/*";
+    fileInput.accept = "gallery/*";
     fileInput.capture = "";
     fileInput.click();
   });
