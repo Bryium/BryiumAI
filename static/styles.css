@@ -158,19 +158,19 @@ body {
   }
 
   .chat-input-container {
-    flex-direction: column;
+    flex-direction: row;
     padding: 10px;
   }
 
   #user-input {
-    margin: 5px 0;
-    width: 100%;
+    margin: 0;
+    width: auto;
   }
 
   #send-button,
   #camera-button,
   #gallery-button {
-    width: 100%;
-    margin: 5px 0;
+    width: auto;
+    margin: 0;
   }
 }
