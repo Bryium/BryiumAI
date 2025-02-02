@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cameraButton = document.getElementById("camera-button");
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
-  const imageContainer = document.getElementById("image-container"); // New container for images
+  const imageContainer = document.getElementById("image-container");
 
-  // Ensure fileInput is set up properly
   if (!fileInput || !imageContainer) {
     console.error("fileInput or imageContainer element is missing.");
     return;
@@ -16,11 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle send button click
   sendButton.addEventListener("click", () => {
     const message = userInput.value.trim();
-    if (message) {
-      console.log("User message:", message);
-      appendUserMessage(message);
+    const image = imageContainer.querySelector("img");
+
+    if (message || image) {
+      // Send either a message or image
+      const combinedMessage = message + (image ? "<br>" + image.outerHTML : "");
+      appendUserMessage(combinedMessage);
       userInput.value = "";
-      fetchChatbotResponse(message);
+      imageContainer.innerHTML = "";
+      console.log("User message:", combinedMessage);
+
+      // Fetch chatbot response
+      fetchChatbotResponse(combinedMessage);
     }
   });
 
@@ -68,14 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle camera input (opens the camera to capture an image)
   cameraButton.addEventListener("click", () => {
     fileInput.accept = "image/*";
-    fileInput.capture = "camera"; // Tells the input to use the camera on mobile devices
+    fileInput.capture = "camera";
     fileInput.click();
   });
 
   // Handle gallery input (opens the file gallery to select an image)
   galleryButton.addEventListener("click", () => {
-    fileInput.accept = "gallery/*";
-    fileInput.capture = ""; // Remove capture so it doesn't force the camera
+    fileInput.accept = "image/*";
+    fileInput.capture = "";
     fileInput.click();
   });
 
@@ -89,15 +95,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Create an image element to display the image
         const img = document.createElement("img");
         img.src = e.target.result;
-        img.style.maxWidth = "5px"; // Set a max width to make the image smaller (you can adjust this value)
-        img.style.height = "auto"; // Ensure the image maintains its aspect ratio
-        img.style.borderRadius = "8px"; // Optional, for styling
+        img.style.maxWidth = "150px";
+        img.style.height = "auto";
+        img.style.borderRadius = "8px";
         img.alt = "User uploaded image";
 
-        // Append the image to the text area
-        const textArea = document.getElementById("user-input"); // The text area where the image will be added
-        textArea.innerHTML = ""; // Clear the text area before adding the new image
-        textArea.appendChild(img);
+        // Append the image to the image container
+        imageContainer.innerHTML = "";
+        imageContainer.appendChild(img);
       };
 
       // Read the file as a data URL (this will trigger the onload function)
