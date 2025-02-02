@@ -173,4 +173,65 @@ body {
     width: auto;
     margin: 0;
   }
+
+  .chat-message {
+    font-size: 0.9em;
+    padding: 10px;
+  }
+
+  .user-message,
+  .bot-message {
+    max-width: 85%;
+  }
+
+  .chat-box::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .chat-box::-webkit-scrollbar-thumb {
+    background-color: #0056b3;
+  }
+}
+
+@media (max-width: 400px) {
+  .chat-header {
+    font-size: 1.2em;
+    padding: 10px;
+  }
+
+  #send-button,
+  #camera-button,
+  #gallery-button {
+    padding: 10px;
+    font-size: 1em;
+  }
+
+  #user-input {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .chat-container {
+    width: 70%;
+  }
+
+  .chat-header {
+    font-size: 2.2em;
+  }
+
+  .chat-message {
+    font-size: 1.2em;
+  }
+
+  #user-input {
+    font-size: 1.1em;
+  }
+
+  #send-button,
+  #camera-button,
+  #gallery-button {
+    font-size: 1.2em;
+  }
 }

@@ -24,8 +24,11 @@
           capture="camera"
           style="display: none"
         />
-        <button id="camera-button">📷</button>
-        <button id="gallery-button">🖼️</button>
+        <button id="toggle-buttons">➕</button>
+        <div id="floating-buttons" class="hidden">
+          <button id="camera-button">📷</button>
+          <button id="gallery-button">🖼️</button>
+        </div>
         <input
           type="text"
           id="user-input"
@@ -34,6 +37,14 @@
         <button id="send-button">Send</button>
       </div>
     </div>
+    <script>
+      document
+        .getElementById("toggle-buttons")
+        .addEventListener("click", function () {
+          const floatingButtons = document.getElementById("floating-buttons");
+          floatingButtons.classList.toggle("hidden");
+        });
+    </script>
     <script src="/static/script.js"></script>
   </body>
 </html>
