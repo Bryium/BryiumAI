@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle gallery input (opens the file gallery to select an image)
   galleryButton.addEventListener("click", () => {
-    fileInput.accept = "image/*";
+    fileInput.accept = "gallery/*";
     fileInput.capture = ""; // Remove capture so it doesn't force the camera
     fileInput.click();
   });
@@ -89,13 +89,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Create an image element to display the image
         const img = document.createElement("img");
         img.src = e.target.result;
-        img.style.maxWidth = "100%"; // Set a max width to make it responsive
+        img.style.maxWidth = "5px"; // Set a max width to make the image smaller (you can adjust this value)
+        img.style.height = "auto"; // Ensure the image maintains its aspect ratio
         img.style.borderRadius = "8px"; // Optional, for styling
         img.alt = "User uploaded image";
 
-        // Append the image to the image container (instead of the textArea)
-        imageContainer.innerHTML = ""; // Clear the container before adding the new image
-        imageContainer.appendChild(img);
+        // Append the image to the text area
+        const textArea = document.getElementById("user-input"); // The text area where the image will be added
+        textArea.innerHTML = ""; // Clear the text area before adding the new image
+        textArea.appendChild(img);
       };
 
       // Read the file as a data URL (this will trigger the onload function)
