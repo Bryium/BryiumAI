@@ -18,7 +18,7 @@ GOOGLE_SEARCH_CX = os.getenv("GOOGLE_SEARCH_CX")
 
 @app.route('/')
 def index():
-    return render_template('nightingale_chatbot.html')
+    return render_template('bryium.html')
 
 @app.route('/chat', methods=['POST'])
 def get_response():
