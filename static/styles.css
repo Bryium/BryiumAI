@@ -1,3 +1,16 @@
+/* styles.css */
+
+/* --------------------------------- */
+/* General Styles */
+/* --------------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+}
+
 body {
   background-color: #121212;
   font-family: "Arial", sans-serif;
@@ -9,6 +22,9 @@ body {
   color: #e0e0e0;
 }
 
+/* --------------------------------- */
+/* Chat Interface Styles */
+/* --------------------------------- */
 .auth-buttons {
   position: absolute;
   top: 20px;
@@ -16,7 +32,7 @@ body {
   z-index: 10;
 }
 
-.auth-btn {
+.auth-buttons .auth-btn {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -28,7 +44,7 @@ body {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.auth-btn:hover {
+.auth-buttons .auth-btn:hover {
   background-color: #0056b3;
   transform: translateY(-2px);
 }
@@ -169,23 +185,9 @@ body {
   }
 }
 
-/* login.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #121212;
-}
-
+/* --------------------------------- */
+/* Login Styles */
+/* --------------------------------- */
 .login-container {
   background: #fff;
   padding: 2rem;
@@ -246,20 +248,20 @@ body {
 }
 
 .login-btn.clicked {
-  background: #90ee90; /* Light green color when clicked */
+  background: #90ee90;
 }
 
 .google-btn {
   background: #fff;
   color: #333;
   border: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  width: 100%;
   padding: 0.75rem;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  text-align: center;
   transition: background 0.3s;
 }
 
@@ -270,208 +272,11 @@ body {
 }
 
 .google-btn.clicked {
-  background: #90ee90; /* Light green color when clicked */
+  background: #90ee90;
 }
 
 .google-btn:hover,
 .login-btn:hover {
-  background: #ccc;
-}
-
-.divider {
-  margin: 1.5rem 0;
-  position: relative;
-  text-align: center;
-}
-
-.divider span {
-  background: #fff;
-  padding: 0 1rem;
-  color: #888;
-  font-size: 0.9rem;
-  position: relative;
-  z-index: 1;
-}
-
-.divider::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: #ddd;
-  z-index: 0;
-}
-
-.social-login {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 480px) {
-  .login-container {
-    padding: 1.5rem;
-    margin: 1rem;
-    width: 90%;
-  }
-
-  .login-container h2 {
-    font-size: 1.5rem;
-  }
-
-  .login-container p {
-    font-size: 0.9rem;
-  }
-
-  .input-group {
-    padding: 0.4rem;
-  }
-
-  .input-group input {
-    font-size: 0.9rem;
-  }
-
-  .login-btn,
-  .google-btn {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
-}
-
-@media (max-width: 320px) {
-  .login-container {
-    padding: 1rem;
-    margin: 0.5rem;
-  }
-
-  .login-container h2 {
-    font-size: 1.2rem;
-  }
-
-  .login-container p {
-    font-size: 0.8rem;
-  }
-
-  .input-group input {
-    font-size: 0.8rem;
-  }
-
-  .login-btn,
-  .google-btn {
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-}
-
-/* Register.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #1f1f1f;
-}
-
-.register-container {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.register-container h2 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-}
-
-.register-container p {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
-
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.input-group {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.5rem;
-}
-
-.input-group .icon {
-  margin-right: 0.5rem;
-  color: #888;
-}
-
-.input-group input {
-  border: none;
-  outline: none;
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-
-.register-btn {
-  background: #ddd;
-  color: #333;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.register-btn.clicked {
-  background: #90ee90; /* Light green color when clicked */
-}
-
-.google-btn {
-  background: #fff;
-  color: #333;
-  border: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.google-btn .social-icon {
-  color: #4285f4;
-  margin-right: 0.5rem;
-  font-weight: bold;
-}
-
-.google-btn.clicked {
-  background: #90ee90; /* Light green color when clicked */
-}
-
-.google-btn:hover,
-.register-btn:hover {
   background: #ccc;
 }
 
@@ -510,7 +315,7 @@ body {
 }
 
 .social-login h1 {
-  color: #333; /* Darker text color */
+  color: #333;
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0;
@@ -519,187 +324,70 @@ body {
 .auth-btn {
   background: #ddd;
   color: #333;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
+  display: block;
+  width: 100%;
+  text-align: center;
   transition: background 0.3s;
 }
 
 .auth-btn.clicked {
-  background: #90ee90; /* Light green color when clicked */
+  background: #90ee90;
 }
 
 .auth-btn:hover {
   background: #ccc;
 }
 
-/* Media Queries for Mobile Responsiveness */
-@media (max-width: 480px) {
-  .register-container {
-    padding: 1.5rem;
-    margin: 1rem;
-    width: 90%;
-  }
-
-  .register-container h2 {
-    font-size: 1.5rem;
-  }
-
-  .register-container p {
-    font-size: 0.9rem;
-  }
-
-  .input-group {
-    padding: 0.4rem;
-  }
-
-  .input-group input {
-    font-size: 0.9rem;
-  }
-
-  .register-btn,
-  .google-btn {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
-
-  .social-login h1 {
-    font-size: 1rem;
-  }
-
-  .auth-btn {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-  }
+/* --------------------------------- */
+/* Register Styles */
+/* --------------------------------- */
+.register-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 
-@media (max-width: 320px) {
-  .register-container {
-    padding: 1rem;
-    margin: 0.5rem;
-  }
-
-  .register-container h2 {
-    font-size: 1.2rem;
-  }
-
-  .register-container p {
-    font-size: 0.8rem;
-  }
-
-  .input-group input {
-    font-size: 0.8rem;
-  }
-
-  .register-btn,
-  .google-btn {
-    font-size: 0.8rem;
-    padding: 0.5rem;
-  }
-
-  .social-login h1 {
-    font-size: 0.9rem;
-  }
-
-  .auth-btn {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-  }
+.register-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Media Queries */
-
-@media (max-width: 600px) {
-  .chat-container {
-    width: 100%;
-    height: 100vh;
-    border-radius: 0;
-  }
-
-  .chat-header {
-    font-size: 1.5em;
-    padding: 15px;
-  }
-
-  .chat-input-container {
-    flex-direction: row;
-    padding: 10px;
-  }
-
-  #user-input {
-    margin: 0;
-    width: auto;
-  }
-
-  #send-button,
-  #camera-button,
-  #gallery-button {
-    width: auto;
-    margin: 0;
-  }
-
-  .chat-message {
-    font-size: 0.9em;
-    padding: 10px;
-  }
-
-  .user-message,
-  .bot-message {
-    max-width: 85%;
-  }
-
-  .chat-box::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .chat-box::-webkit-scrollbar-thumb {
-    background-color: #0056b3;
-  }
+.register-container p {
+  color: #666;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 400px) {
-  .chat-header {
-    font-size: 1.2em;
-    padding: 10px;
-  }
-
-  #send-button,
-  #camera-button,
-  #gallery-button {
-    padding: 10px;
-    font-size: 1em;
-  }
-
-  #user-input {
-    padding: 10px;
-    font-size: 0.9em;
-  }
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-@media (min-width: 1200px) {
-  .chat-container {
-    width: 70%;
-  }
+.register-btn {
+  background: #ddd;
+  color: #333;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 
-  .chat-header {
-    font-size: 2.2em;
-  }
+.register-btn.clicked {
+  background: #90ee90;
+}
 
-  .chat-message {
-    font-size: 1.2em;
-  }
-
-  #user-input {
-    font-size: 1.1em;
-  }
-
-  #send-button,
-  #camera-button,
-  #gallery-button {
-    font-size: 1.2em;
-  }
+.register-btn:hover {
+  background: #ccc;
 }
