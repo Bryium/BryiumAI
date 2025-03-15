@@ -7,8 +7,9 @@ from nltk.tokenize import word_tokenize
 from models import db
 from dotenv import load_dotenv
 from conversation_history import get_conversation_history, update_conversation_history
-from werkzeug.security import generate_password_hash
-from models import User, db
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import User
+from flask_login import login_user  
 
 # Load environment variables from .env file
 load_dotenv()
@@ -22,16 +23,28 @@ GEMINI_API_URL = os.getenv("GEMINI_API_URL")
 GOOGLE_SEARCH_API_KEY = os.getenv("GOOGLE_SEARCH_API_KEY")
 GOOGLE_SEARCH_CX = os.getenv("GOOGLE_SEARCH_CX")
 
-
-main_bp = Blueprint('main', __name__)
 # Routes
 @main_bp.route('/')
 def index():
     return render_template('bryium.html')
 
-@main_bp.route('/login')
+# Login
+@main_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return jsonify({"success": True}), 200
+        else:
+            return jsonify({"success": False, "message": "Incorrect email or password"}), 400
+    else:
+        return render_template('login.html')
 
 # Register route for GET (render form) and POST (handle form submission)
 @main_bp.route('/register', methods=['GET', 'POST'])

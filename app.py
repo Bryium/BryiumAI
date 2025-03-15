@@ -1,10 +1,10 @@
 from flask import Flask
-from conversation_history import conversation_history
 from dotenv import load_dotenv
 import os
 from routes import main_bp
-from models import db 
-from flask_migrate import Migrate 
+from db import db  
+from flask_migrate import Migrate
+from flask_login import LoginManager
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,11 +12,27 @@ load_dotenv()
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # Your database URL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')  
 
 # Initialize the database with the app 
 db.init_app(app)
+
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Set the login view (optional but recommended)
+login_manager.login_view = "main_bp.login"
+
+# User loader function
+from models import User  # Import User model
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# Initialize migration
 migrate = Migrate(app, db)
 
 # Register the blueprint
