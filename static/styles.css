@@ -9,6 +9,30 @@ body {
   color: #e0e0e0;
 }
 
+.auth-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.auth-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 1em;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.auth-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
 .chat-container {
   background-color: #1f1f1f;
   border-radius: 20px;

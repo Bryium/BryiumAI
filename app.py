@@ -4,11 +4,24 @@ from dotenv import load_dotenv
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from collections import defaultdict
+import re
+import nltk
+
+
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+
+# Global dictionary to track conversation history per user
+conversation_history = defaultdict(list)
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
+
+# Memory storage for conversation history
+conversation_history = {}
 
 # Get the Gemini API key and endpoint from environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -136,6 +149,81 @@ def summarize_content(content):
     if len(sentences) > 3:
         return '. '.join(sentences[:3]) + '...'
     return content
+
+def get_response():
+    user_message = request.json.get('message')
+    user_id = request.json.get('user_id', 'default_user')  # Unique ID for tracking conversation
+    
+    # Retrieve past conversation history
+    history = conversation_history.get(user_id, [])
+    
+    # Check if the message requires an internet search
+    if "today's date" in user_message.lower() or "what is the date" in user_message.lower():
+        response = get_current_date()
+    elif should_search_internet(user_message):
+        search_results = fetch_search_results(user_message)
+        response = search_results if search_results else "I couldn't find relevant information online."
+    else:
+        # Include history for context
+        full_query = " ".join(history[-5:]) + " " + user_message  # Use last 5 messages as context
+        response = get_gemini_response(full_query, GEMINI_API_KEY)
+    
+    # Update conversation history
+    history.append(user_message)
+    history.append(response)
+    conversation_history[user_id] = history[-10:]  # Keep only the last 10 messages for memory efficiency
+    
+    return jsonify({'response': response})
+
+
+def clean_and_normalize_text(text):
+    """Preprocess text to handle broken English and typos."""
+    text = text.lower().strip()  # Convert to lowercase and remove extra spaces
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)  # Remove special characters
+    tokens = word_tokenize(text)  # Tokenize text for better understanding
+    return " ".join(tokens)  # Convert tokens back to a string
+
+def get_response():
+    user_message = request.json.get('message', '').strip()
+    user_id = request.json.get('user_id', 'default_user')  # Unique ID to track conversations
+
+    if not user_message:
+        return jsonify({'response': "I didn't get that. Can you rephrase?"})
+
+    # Normalize and clean user input
+    cleaned_message = clean_and_normalize_text(user_message)
+
+    # Retrieve past conversation history
+    history = conversation_history[user_id]
+
+    # Check for date queries
+    if "todays date" in cleaned_message or "what is the date" in cleaned_message:
+        response = get_current_date()
+    elif should_search_internet(cleaned_message):
+        search_results = fetch_search_results(cleaned_message)
+        response = search_results if search_results else "I couldn't find relevant information online."
+    else:
+        # Include conversation history for context
+        full_query = " ".join(history[-5:]) + " " + cleaned_message  # Use last 5 messages for context
+        response = get_gemini_response(full_query, GEMINI_API_KEY)
+
+    # Update conversation history
+    history.append(user_message)
+    history.append(response)
+    conversation_history[user_id] = history[-10:]  # Keep the last 10 messages per user
+
+    return jsonify({'response': response})
+
+def get_current_date():
+    """Return the current date in a readable format."""
+    return datetime.now().strftime('%B %d, %Y')
+
+def should_search_internet(query):
+    """Determine if the query requires an internet search."""
+    keywords = ["latest", "news", "update", "current", "today", "recent"]
+    return any(keyword in query for keyword in keywords)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
