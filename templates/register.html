@@ -3,32 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
+    <title>Register Form</title>
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
     <div class="register-container">
-      <h1>Register</h1>
-      <form action="/register" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-
-        <label for="confirm_password">Confirm Password:</label>
-        <input
-          type="password"
-          id="confirm_password"
-          name="confirm_password"
-          required
-        />
-
-        <button type="submit">Register</button>
+      <h2>Register</h2>
+      <p>Enter your correct details to get started</p>
+      <form class="register-form">
+        <div class="input-group">
+          <span class="icon">👤</span>
+          <input type="text" placeholder="Enter your username" required />
+        </div>
+        <div class="input-group">
+          <span class="icon">✉️</span>
+          <input type="email" placeholder="Enter email address" required />
+        </div>
+        <div class="input-group">
+          <span class="icon">🔒</span>
+          <input type="password" placeholder="Enter password" required />
+        </div>
+        <div class="input-group">
+          <span class="icon">🔒</span>
+          <input type="password" placeholder="Confirm password" required />
+        </div>
+        <button type="submit" class="register-btn">Register</button>
       </form>
+      <div class="divider">
+        <span>OR</span>
+      </div>
+      <div class="social-login">
+        <h1>Already have an account?</h1>
+        <a href="/login" class="auth-btn">Login</a>
+      </div>
     </div>
+    <script>
+      document
+        .querySelector(".register-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // Prevent form submission for demo
+          this.classList.add("clicked");
+          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+        });
+
+      document
+        .querySelector(".google-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // Prevent default action
+          this.classList.add("clicked");
+          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+        });
+    </script>
   </body>
 </html>

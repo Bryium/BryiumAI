@@ -33,6 +33,14 @@ GOOGLE_SEARCH_CX = os.getenv("GOOGLE_SEARCH_CX")
 def index():
     return render_template('bryium.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
 @app.route('/chat', methods=['POST'])
 def get_response():
     user_message = request.json.get('message')

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Login</h2>
+      <p>Enter your correct details to access your account</p>
+      <form class="login-form">
+        <div class="input-group">
+          <span class="icon">✉️</span>
+          <input type="email" placeholder="Enter email address" required />
+        </div>
+        <div class="input-group">
+          <span class="icon">🔒</span>
+          <input type="password" placeholder="Enter password" required />
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+      <div class="divider">
+        <span>OR</span>
+      </div>
+      <div class="social-login">
+        <button class="social-btn google-btn">
+          <span class="social-icon">G</span> Continue with Google
+        </button>
+      </div>
+    </div>
+    <script>
+      document
+        .querySelector(".login-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // Prevent form submission for demo
+          this.classList.add("clicked");
+          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+        });
+
+      document
+        .querySelector(".google-btn")
+        .addEventListener("click", function (e) {
+          e.preventDefault(); // Prevent default action
+          this.classList.add("clicked");
+          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+        });
+    </script>
+  </body>
+</html>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bryium?</title>
     <link rel="stylesheet" href="/static/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/Toastify.min.js"></script>
   </head>
   <body>
     <!-- Top-right buttons -->
@@ -42,6 +43,44 @@
       <div id="image-container"></div>
       <!-- Container for displaying uploaded image -->
     </div>
+
+    <!-- Script for Toastify flashing messages -->
+    <script>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            // Use Toastify to show flash messages from Flask
+            Toastify({
+              text: "{{ message }}",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: category == 'danger' ? 'red' : 'green'
+            }).showToast();
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </script>
+
     <script src="/static/script.js"></script>
+    <script>
+      // This code is embedded inside the HTML to handle the Toastify flashing messages
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            // Use Toastify to show flash messages from Flask
+            Toastify({
+              text: "{{ message }}",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: category == 'danger' ? 'red' : 'green'
+            }).showToast();
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </script>
   </body>
 </html>
