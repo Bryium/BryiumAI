@@ -35,17 +35,17 @@
       document
         .querySelector(".login-btn")
         .addEventListener("click", function (e) {
-          e.preventDefault(); // Prevent form submission for demo
+          e.preventDefault();
           this.classList.add("clicked");
-          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+          setTimeout(() => this.classList.remove("clicked"), 200);
         });
 
       document
         .querySelector(".google-btn")
         .addEventListener("click", function (e) {
-          e.preventDefault(); // Prevent default action
+          e.preventDefault();
           this.classList.add("clicked");
-          setTimeout(() => this.classList.remove("clicked"), 200); // Reset after 200ms
+          setTimeout(() => this.classList.remove("clicked"), 200);
         });
     </script>
   </body>

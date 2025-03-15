@@ -1,0 +1,209 @@
+from flask import Blueprint, redirect, render_template, request, jsonify, url_for
+from datetime import datetime
+import os
+import requests
+from bs4 import BeautifulSoup
+from nltk.tokenize import word_tokenize
+from models import db
+from dotenv import load_dotenv
+from conversation_history import get_conversation_history, update_conversation_history
+from werkzeug.security import generate_password_hash
+from models import User, db
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Create a blueprint
+main_bp = Blueprint('main', __name__)
+
+# Get the Gemini API key and endpoint from environment variables
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_URL = os.getenv("GEMINI_API_URL")
+GOOGLE_SEARCH_API_KEY = os.getenv("GOOGLE_SEARCH_API_KEY")
+GOOGLE_SEARCH_CX = os.getenv("GOOGLE_SEARCH_CX")
+
+
+main_bp = Blueprint('main', __name__)
+# Routes
+@main_bp.route('/')
+def index():
+    return render_template('bryium.html')
+
+@main_bp.route('/login')
+def login():
+    return render_template('login.html')
+
+# Register route for GET (render form) and POST (handle form submission)
+@main_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        data = request.get_json()
+
+        username = data.get('username')
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
+
+        if password != confirm_password:
+            return jsonify({"success": False, "message": "Passwords do not match. Please try again."}), 400
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return jsonify({"success": False, "message": "Email already registered. Please login."}), 400
+
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        new_user = User(username=username, email=email, password=hashed_password)
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Registration successful!"})
+
+    return render_template('register.html')
+
+@main_bp.route('/check-email', methods=['POST'])
+def check_email():
+    data = request.get_json()
+    email = data.get('email')
+
+    # Check if email exists in the database
+    if User.query.filter_by(email=email).first():
+        return jsonify({"exists": True}), 200
+    return jsonify({"exists": False}), 200
+
+@main_bp.route('/chat', methods=['POST'])
+def get_response():
+    user_message = request.json.get('message', '').strip()
+    user_id = request.json.get('user_id', 'default_user')  # Unique ID to track conversations
+
+    if not user_message:
+        return jsonify({'response': "I didn't get that. Can you rephrase?"})
+
+    # Normalize and clean user input
+    cleaned_message = clean_and_normalize_text(user_message)
+
+    # Retrieve past conversation history
+    history = get_conversation_history(user_id)
+
+    # Check for date queries
+    if "todays date" in cleaned_message or "what is the date" in cleaned_message:
+        response = get_current_date()
+    elif should_search_internet(cleaned_message):
+        search_results = fetch_search_results(cleaned_message)
+        response = search_results if search_results else "I couldn't find relevant information online."
+    else:
+        # Include conversation history for context
+        full_query = " ".join(history[-5:]) + " " + cleaned_message  # Use last 5 messages for context
+        response = get_gemini_response(full_query, GEMINI_API_KEY)
+
+    # Update conversation history
+    update_conversation_history(user_id, user_message, response)
+
+    return jsonify({'response': response})
+
+def get_current_date():
+    """Return the current date in a readable format."""
+    return datetime.now().strftime('%B %d, %Y')
+
+def clean_and_normalize_text(text):
+    """Preprocess text to handle broken English and typos."""
+    import re
+    text = text.lower().strip()  # Convert to lowercase and remove extra spaces
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)  # Remove special characters
+    tokens = word_tokenize(text)  # Tokenize text for better understanding
+    return " ".join(tokens)  # Convert tokens back to a string
+
+def should_search_internet(query):
+    """Determine if the query requires an internet search."""
+    keywords = ["latest", "news", "update", "current", "today", "recent"]
+    return any(keyword in query for keyword in keywords)
+
+def fetch_search_results(query):
+    """Fetch real-time information from the internet using Google Search API."""
+    search_url = "https://www.googleapis.com/customsearch/v1"
+    params = {
+        "key": GOOGLE_SEARCH_API_KEY,  # Your Google Search API key
+        "cx": GOOGLE_SEARCH_CX,         # Your Search Engine ID (CX)
+        "q": query                       # Use the raw query directly
+    }
+    try:
+        # Make the request to the Google Custom Search API
+        response = requests.get(search_url, params=params)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        # Process the response
+        data = response.json()
+        items = data.get("items", [])
+        if items:
+            # Get the first link
+            first_link = items[0].get('link')
+            # Scrape the content from the first link
+            scraped_content = scrape_content(first_link)
+            return scraped_content if scraped_content else "No relevant content found on the page."
+        
+        return "No relevant search results found."
+    except requests.exceptions.RequestException as e:
+        # Handle connection errors or invalid responses
+        return f"Error fetching search results: {e}"
+
+def scrape_content(url):
+    """Scrape content from the given URL and summarize it."""
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Parse the HTML content
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Extract title for the summary
+        title = soup.title.string if soup.title else "Information"
+
+        # Extract text content from paragraphs
+        paragraphs = soup.find_all('p')
+        content = ' '.join([para.get_text() for para in paragraphs])
+
+        # Summarize the content
+        summary = summarize_content(content)
+
+        return f"{title}\n\n{summary}"
+    except requests.exceptions.RequestException as e:
+        return f"Error scraping the content: {e}"
+
+def summarize_content(content):
+    """Summarize the content to extract key points."""
+    sentences = content.split('. ')
+    if len(sentences) > 3:
+        return '. '.join(sentences[:3]) + '...'
+    return content
+
+def get_gemini_response(query, api_key):
+    """Fetch the response from Gemini API."""
+    headers = {
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {
+                        "text": query
+                    }
+                ]
+            }
+        ]
+    }
+    try:
+        # Sending a POST request to the Gemini API
+        response = requests.post(GEMINI_API_URL, json=payload, headers=headers, params={"key": api_key})
+        response.raise_for_status()
+
+        # Extracting the chatbot response from the API
+        data = response.json()
+        candidates = data.get("candidates", [{}])
+        if candidates and "content" in candidates[0] and "parts" in candidates[0]["content"]:
+            return candidates[0]["content"]["parts"][0].get("text", "I couldn't fetch a response from Gemini.")
+        return "No valid response from Gemini."
+    except requests.exceptions.RequestException as e:
+        # Handle connection errors or invalid responses
+        return f"Error connecting to Gemini API: {e}"

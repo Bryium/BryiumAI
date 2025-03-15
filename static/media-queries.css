@@ -47,6 +47,11 @@
   .chat-box::-webkit-scrollbar-thumb {
     background-color: #0056b3;
   }
+
+  .auth-buttons {
+    top: 10px;
+    right: 10px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -89,6 +94,10 @@
   #camera-button,
   #gallery-button {
     font-size: 1.2em;
+  }
+  .auth-buttons {
+    top: 10px;
+    right: 10px;
   }
 }
 
