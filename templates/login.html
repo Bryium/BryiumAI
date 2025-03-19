@@ -12,6 +12,14 @@
     />
   </head>
   <body>
+    <!-- Top-right buttons (only visible if not logged in) -->
+    {% if not current_user.is_authenticated %}
+    <div class="auth-buttons">
+      <a href="/login" class="auth-btn">Login</a>
+      <a href="/register" class="auth-btn">Register</a>
+    </div>
+    {% endif %}
+
     <div class="login-container">
       <h2>Login</h2>
       <p>Enter your correct details to access your account</p>
@@ -40,11 +48,12 @@
         <span>OR</span>
       </div>
       <div class="social-login">
-        <button class="social-btn google-btn">
+        <button class="social-btn google-btn" id="google-signin-btn">
           <span class="social-icon">G</span> Continue with Google
         </button>
       </div>
     </div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
@@ -80,7 +89,7 @@
                   gravity: "top",
                   position: "right",
                 }).showToast();
-                setTimeout(() => (window.location.href = "/"), 3000); // Redirect to the home page (bryium.html)
+                setTimeout(() => (window.location.href = "/"), 3000);
               } else {
                 // Error message for incorrect email/password
                 Toastify({
@@ -104,6 +113,185 @@
               console.error("Error:", error);
             });
         });
+        <script>
+          function handleCredentialResponse(response) {
+              console.log("Google JWT Token:", response.credential); 
+              
+              // Send token to your backend for verification
+              fetch('/google-login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ token: response.credential })
+              })
+              .then(res => res.json())
+              .then(data => {
+                  if (data.success) {
+                      window.location.href = "/dashboard"; // Redirect on success
+                  } else {
+                      alert("Google login failed");
+                  }
+              });
+          }
+        
+          window.onload = function () {
+              google.accounts.id.initialize({
+                  client_id: "YOUR_GOOGLE_CLIENT_ID",
+                  callback: handleCredentialResponse
+              });
+        
+              google.accounts.id.renderButton(
+                  document.getElementById("google-signin-btn"),
+                  { theme: "outline", size: "large" }
+              );
+        
+              google.accounts.id.prompt();
+          };
+        </script>
+```html
+<!-- Top-right buttons (only visible if not logged in) -->
+{% if not current_user.is_authenticated %}
+<div class="auth-buttons">
+  <a href="/login" class="auth-btn">Login</a>
+  <a href="/register" class="auth-btn">Register</a>
+</div>
+{% endif %}
+
+<div class="login-container">
+  <h2>Login</h2>
+  <p>Enter your correct details to access your account</p>
+  <form class="login-form" id="loginForm">
+    <div class="input-group">
+      <span class="icon">✉️</span>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter email address"
+        required
+      />
+    </div>
+    <div class="input-group">
+      <span class="icon">🔒</span>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter password"
+        required
+      />
+    </div>
+    <button type="submit" class="login-btn">Login</button>
+  </form>
+  <div class="divider">
+    <span>OR</span>
+  </div>
+  <div class="social-login">
+    <button class="social-btn google-btn" id="google-signin-btn">
+      <span class="social-icon">G</span> Continue with Google
+    </button>
+  </div>
+</div>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+  const loginForm = document.querySelector("#loginForm");
+  const emailInput = document.querySelector("#email");
+  const passwordInput = document.querySelector("#password");
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      Toastify({
+        text: "Please fill in all fields",
+        backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+      }).showToast();
+      return;
+    }
+
+    const userData = {
+      email,
+      password,
+    };
+
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Toastify({
+            text: "Logged in successfully!",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+          }).showToast();
+          setTimeout(() => (window.location.href = "/"), 3000);
+        } else {
+          Toastify({
+            text: data.message || "Invalid email or password",
+            backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+            duration: 3000,
+            gravity: "top",
+            position: "right",
+          }).showToast();
+        }
+      })
+      .catch((error) => {
+        Toastify({
+          text: "An error occurred. Please try again later.",
+          backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+        }).showToast();
+        console.error("Error:", error);
+      });
+  });
+
+  function handleCredentialResponse(response) {
+    console.log("Google JWT Token:", response.credential);
+
+    fetch("/google-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: response.credential }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          window.location.href = "/dashboard"; // Redirect on success
+        } else {
+          alert("Google login failed");
+        }
+      });
+  }
+
+  window.onload = function () {
+    google.accounts.id.initialize({
+      client_id: "YOUR_GOOGLE_CLIENT_ID",
+      callback: handleCredentialResponse,
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("google-signin-btn"),
+      { theme: "outline", size: "large" }
+    );
+
+    google.accounts.id.prompt();
+  };
+</script>
+```        
     </script>
   </body>
 </html>

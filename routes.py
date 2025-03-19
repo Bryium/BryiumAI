@@ -88,7 +88,7 @@ def check_email():
 @main_bp.route('/chat', methods=['POST'])
 def get_response():
     user_message = request.json.get('message', '').strip()
-    user_id = request.json.get('user_id', 'default_user')  # Unique ID to track conversations
+    user_id = request.json.get('user_id', 'default_user')  
 
     if not user_message:
         return jsonify({'response': "I didn't get that. Can you rephrase?"})
@@ -107,7 +107,7 @@ def get_response():
         response = search_results if search_results else "I couldn't find relevant information online."
     else:
         # Include conversation history for context
-        full_query = " ".join(history[-5:]) + " " + cleaned_message  # Use last 5 messages for context
+        full_query = " ".join(history[-5:]) + " " + cleaned_message  
         response = get_gemini_response(full_query, GEMINI_API_KEY)
 
     # Update conversation history
@@ -122,10 +122,10 @@ def get_current_date():
 def clean_and_normalize_text(text):
     """Preprocess text to handle broken English and typos."""
     import re
-    text = text.lower().strip()  # Convert to lowercase and remove extra spaces
-    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)  # Remove special characters
-    tokens = word_tokenize(text)  # Tokenize text for better understanding
-    return " ".join(tokens)  # Convert tokens back to a string
+    text = text.lower().strip()  
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)  
+    tokens = word_tokenize(text)  
+    return " ".join(tokens)  
 
 def should_search_internet(query):
     """Determine if the query requires an internet search."""
@@ -136,14 +136,14 @@ def fetch_search_results(query):
     """Fetch real-time information from the internet using Google Search API."""
     search_url = "https://www.googleapis.com/customsearch/v1"
     params = {
-        "key": GOOGLE_SEARCH_API_KEY,  # Your Google Search API key
-        "cx": GOOGLE_SEARCH_CX,         # Your Search Engine ID (CX)
-        "q": query                       # Use the raw query directly
+        "key": GOOGLE_SEARCH_API_KEY,  
+        "cx": GOOGLE_SEARCH_CX,         
+        "q": query                       
     }
     try:
         # Make the request to the Google Custom Search API
         response = requests.get(search_url, params=params)
-        response.raise_for_status()  # Raise an error for bad responses
+        response.raise_for_status()  
 
         # Process the response
         data = response.json()
@@ -157,7 +157,6 @@ def fetch_search_results(query):
         
         return "No relevant search results found."
     except requests.exceptions.RequestException as e:
-        # Handle connection errors or invalid responses
         return f"Error fetching search results: {e}"
 
 def scrape_content(url):
