@@ -9,29 +9,12 @@ Bryium? is an intelligent, RAG-powered chatbot built with Flask for a robust bac
 > Flask: The lightweight web framework that powers the backend of the chatbot, handling requests and routing between the AI components and user-facing frontend.
 >GeminiAPI: A powerful AI platform that provides machine learning models to generate context-based responses and improve the chatbot's interactions.
 > LangChain.js: A conversational framework that allows the chatbot to intelligently manage conversation states and context, ensuring meaningful and relevant dialogues.
-> Pure CSS: The frontend design utilizes pure CSS for styling, creating a clean, simple, and responsive user interface that adapts across devices.
-# Project Structure
-Nightingale/
-│
-├── backend/               # Flask API and server logic
-│   ├── app.py             # Main entry point for Flask app
-│   ├── chatbot/           # Chatbot logic and integration
-│   ├── responses/         # AI responses powered by GeminiAPI
-│   └── ...
-│
-├── frontend/              # User Interface with pure CSS
-│   ├── index.html         # Main HTML file
-│   ├── styles.css         # CSS file for UI styling
-│   └── ...
-│
-├── .gitignore             # Git ignore file
-├── requirements.txt       # Python dependencies
-└── README.md              # Project documentation
+> Pure CSS: The frontend design utilizes pure CSS for styling, creating a clean, simple, and responsive user interface that adapts across devices
 
 # Installation
 # Clone the repository:
-git clone https://github.com/yourusername/nightingale.git
-cd nightingale
+git clone https://github.com/yourusername/BryiumAI.git
+cd bryiumai
 # Set up the Python environment: Create and activate a virtual environment (optional but recommended):
 python -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
