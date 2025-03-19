@@ -12,7 +12,6 @@
     />
   </head>
   <body>
-    <!-- Top-right buttons (only visible if not logged in) -->
     {% if not current_user.is_authenticated %}
     <div class="auth-buttons">
       <a href="/login" class="auth-btn">Login</a>
@@ -53,8 +52,8 @@
         </button>
       </div>
     </div>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
       document
@@ -62,45 +61,40 @@
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          const email = document.querySelector("#email").value;
-          const password = document.querySelector("#password").value;
+          const email = document.querySelector("#email").value.trim();
+          const password = document.querySelector("#password").value.trim();
 
-          const userData = {
-            email: email,
-            password: password,
-          };
+          if (!email || !password) {
+            Toastify({
+              text: "Please fill in all fields",
+              backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+            }).showToast();
+            return;
+          }
 
           fetch("/login", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(userData),
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
           })
             .then((response) => response.json())
             .then((data) => {
-              if (data.success) {
-                // Success message using Toastify
-                Toastify({
-                  text: "Logged in successfully!",
-                  backgroundColor:
-                    "linear-gradient(to right, #00b09b, #96c93d)",
-                  duration: 3000,
-                  gravity: "top",
-                  position: "right",
-                }).showToast();
+              Toastify({
+                text: data.success
+                  ? "Logged in successfully!"
+                  : data.message || "Invalid email or password",
+                backgroundColor: data.success
+                  ? "linear-gradient(to right, #00b09b, #96c93d)"
+                  : "linear-gradient(to right, #FF5F6D, #FFC371)",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+              }).showToast();
+              if (data.success)
                 setTimeout(() => (window.location.href = "/"), 3000);
-              } else {
-                // Error message for incorrect email/password
-                Toastify({
-                  text: data.message || "Invalid email or password",
-                  backgroundColor:
-                    "linear-gradient(to right, #FF5F6D, #FFC371)",
-                  duration: 3000,
-                  gravity: "top",
-                  position: "right",
-                }).showToast();
-              }
             })
             .catch((error) => {
               Toastify({
@@ -113,185 +107,44 @@
               console.error("Error:", error);
             });
         });
-        <script>
-          function handleCredentialResponse(response) {
-              console.log("Google JWT Token:", response.credential); 
-              
-              // Send token to your backend for verification
-              fetch('/google-login', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ token: response.credential })
-              })
-              .then(res => res.json())
-              .then(data => {
-                  if (data.success) {
-                      window.location.href = "/dashboard"; // Redirect on success
-                  } else {
-                      alert("Google login failed");
-                  }
-              });
-          }
-        
-          window.onload = function () {
-              google.accounts.id.initialize({
-                  client_id: "YOUR_GOOGLE_CLIENT_ID",
-                  callback: handleCredentialResponse
-              });
-        
-              google.accounts.id.renderButton(
-                  document.getElementById("google-signin-btn"),
-                  { theme: "outline", size: "large" }
-              );
-        
-              google.accounts.id.prompt();
-          };
-        </script>
-```html
-<!-- Top-right buttons (only visible if not logged in) -->
-{% if not current_user.is_authenticated %}
-<div class="auth-buttons">
-  <a href="/login" class="auth-btn">Login</a>
-  <a href="/register" class="auth-btn">Register</a>
-</div>
-{% endif %}
 
-<div class="login-container">
-  <h2>Login</h2>
-  <p>Enter your correct details to access your account</p>
-  <form class="login-form" id="loginForm">
-    <div class="input-group">
-      <span class="icon">✉️</span>
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter email address"
-        required
-      />
-    </div>
-    <div class="input-group">
-      <span class="icon">🔒</span>
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter password"
-        required
-      />
-    </div>
-    <button type="submit" class="login-btn">Login</button>
-  </form>
-  <div class="divider">
-    <span>OR</span>
-  </div>
-  <div class="social-login">
-    <button class="social-btn google-btn" id="google-signin-btn">
-      <span class="social-icon">G</span> Continue with Google
-    </button>
-  </div>
-</div>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+      function handleCredentialResponse(response) {
+        fetch("/google-login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: response.credential }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            Toastify({
+              text: data.success
+                ? "Logged in successfully!"
+                : "Google login failed",
+              backgroundColor: data.success
+                ? "linear-gradient(to right, #00b09b, #96c93d)"
+                : "linear-gradient(to right, #FF5F6D, #FFC371)",
+              duration: 3000,
+              gravity: "top",
+              position: "right",
+            }).showToast();
+            if (data.success)
+              setTimeout(() => (window.location.href = "/dashboard"), 3000);
+          });
+      }
 
-<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-<script>
-  const loginForm = document.querySelector("#loginForm");
-  const emailInput = document.querySelector("#email");
-  const passwordInput = document.querySelector("#password");
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id: "YOUR_GOOGLE_CLIENT_ID",
+          callback: handleCredentialResponse,
+        });
 
-  loginForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+        google.accounts.id.renderButton(
+          document.getElementById("google-signin-btn"),
+          { theme: "outline", size: "large" }
+        );
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (!email || !password) {
-      Toastify({
-        text: "Please fill in all fields",
-        backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-        duration: 3000,
-        gravity: "top",
-        position: "right",
-      }).showToast();
-      return;
-    }
-
-    const userData = {
-      email,
-      password,
-    };
-
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          Toastify({
-            text: "Logged in successfully!",
-            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-          }).showToast();
-          setTimeout(() => (window.location.href = "/"), 3000);
-        } else {
-          Toastify({
-            text: data.message || "Invalid email or password",
-            backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-            duration: 3000,
-            gravity: "top",
-            position: "right",
-          }).showToast();
-        }
-      })
-      .catch((error) => {
-        Toastify({
-          text: "An error occurred. Please try again later.",
-          backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-        }).showToast();
-        console.error("Error:", error);
-      });
-  });
-
-  function handleCredentialResponse(response) {
-    console.log("Google JWT Token:", response.credential);
-
-    fetch("/google-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: response.credential }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          window.location.href = "/dashboard"; // Redirect on success
-        } else {
-          alert("Google login failed");
-        }
-      });
-  }
-
-  window.onload = function () {
-    google.accounts.id.initialize({
-      client_id: "YOUR_GOOGLE_CLIENT_ID",
-      callback: handleCredentialResponse,
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById("google-signin-btn"),
-      { theme: "outline", size: "large" }
-    );
-
-    google.accounts.id.prompt();
-  };
-</script>
-```        
+        google.accounts.id.prompt();
+      };
     </script>
   </body>
 </html>

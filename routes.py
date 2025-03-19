@@ -5,6 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
 from models import db
+from google.oauth2 import id_token
+from google.auth.transport import requests
 from dotenv import load_dotenv
 from conversation_history import get_conversation_history, update_conversation_history
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -16,6 +18,9 @@ load_dotenv()
 
 # Create a blueprint
 main_bp = Blueprint('main', __name__)
+
+# Google client ID 
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 
 # Get the Gemini API key and endpoint from environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -33,20 +38,47 @@ def index():
 def login():
     if request.method == 'POST':
         data = request.get_json()
-        email = data['email']
-        password = data['password']
 
-        user = User.query.filter_by(email=email).first()
+        if 'email' in data and 'password' in data:  # Standard login
+            email = data['email']
+            password = data['password']
 
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return jsonify({"success": True}), 200
-        else:
-            return jsonify({"success": False, "message": "Incorrect email or password"}), 400
-    else:
-        return render_template('login.html')
+            user = User.query.filter_by(email=email).first()
 
-# Register route for GET (render form) and POST (handle form submission)
+            if user and check_password_hash(user.password, password):
+                login_user(user)
+                return jsonify({"success": True, "message": "Login successful"}), 200
+            else:
+                return jsonify({"success": False, "message": "Incorrect email or password"}), 400
+
+        elif 'token' in data:  # Google Sign-In
+            try:
+                token = data['token']
+                id_info = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+
+                if id_info["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
+                    return jsonify({"success": False, "message": "Invalid token issuer"}), 400
+
+                email = id_info["email"]
+                name = id_info.get("name", "")
+                picture = id_info.get("picture", "")
+
+                # Check if user exists
+                user = User.query.filter_by(email=email).first()
+                if not user:
+                    # Create a new user
+                    user = User(email=email, name=name, profile_picture=picture)
+                    db.session.add(user)
+                    db.session.commit()
+
+                login_user(user)
+                return jsonify({"success": True, "message": "Google Sign-In successful"}), 200
+
+            except Exception as e:
+                return jsonify({"success": False, "message": str(e)}), 400
+
+    return render_template('login.html')
+
 @main_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
