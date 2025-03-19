@@ -21,6 +21,7 @@ main_bp = Blueprint('main', __name__)
 
 # Google client ID 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 # Get the Gemini API key and endpoint from environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -33,13 +34,18 @@ GOOGLE_SEARCH_CX = os.getenv("GOOGLE_SEARCH_CX")
 def index():
     return render_template('bryium.html')
 
+@main_bp.route('/home')
+def home():
+    return render_template('home.html')
+
+
 # Login
 @main_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
 
-        if 'email' in data and 'password' in data:  # Standard login
+        if 'email' in data and 'password' in data:  
             email = data['email']
             password = data['password']
 

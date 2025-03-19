@@ -94,7 +94,7 @@
                 position: "right",
               }).showToast();
               if (data.success)
-                setTimeout(() => (window.location.href = "/"), 3000);
+                setTimeout(() => (window.location.href = "/home"), 3000);
             })
             .catch((error) => {
               Toastify({
@@ -128,13 +128,13 @@
               position: "right",
             }).showToast();
             if (data.success)
-              setTimeout(() => (window.location.href = "/dashboard"), 3000);
+              setTimeout(() => (window.location.href = "/home"), 3000);
           });
       }
 
       window.onload = function () {
         google.accounts.id.initialize({
-          client_id: "YOUR_GOOGLE_CLIENT_ID",
+          client_id: "GOOGLE_CLIENT_ID",
           callback: handleCredentialResponse,
         });
 
