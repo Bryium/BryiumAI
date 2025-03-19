@@ -1,17 +1,18 @@
 from flask import Blueprint, redirect, render_template, request, jsonify, url_for
 from datetime import datetime
 import os
-import requests
+import requests  
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
 from models import db
 from google.oauth2 import id_token
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests 
 from dotenv import load_dotenv
 from conversation_history import get_conversation_history, update_conversation_history
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
-from flask_login import login_user  
+from flask_login import login_user
+
 
 # Load environment variables from .env file
 load_dotenv()
