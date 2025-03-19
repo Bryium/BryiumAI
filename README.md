@@ -9,7 +9,7 @@ Bryium? is an intelligent, RAG-powered chatbot built with Flask for a robust bac
 > Flask: The lightweight web framework that powers the backend of the chatbot, handling requests and routing between the AI components and user-facing frontend.
 >GeminiAPI: A powerful AI platform that provides machine learning models to generate context-based responses and improve the chatbot's interactions.
 > LangChain.js: A conversational framework that allows the chatbot to intelligently manage conversation states and context, ensuring meaningful and relevant dialogues.
-> Pure CSS: The frontend design utilizes pure CSS for styling, creating a clean, simple, and responsive user interface that adapts across devices
+> Pure CSS: The frontend design utilizes pure CSS for styling, creating a clean, simple, and responsive user interface that adapts across devices in the tech ecosystem 
 
 # Installation
 # Clone the repository:
