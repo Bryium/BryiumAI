@@ -38,5 +38,5 @@ migrate = Migrate(app, db)
 # Register the blueprint
 app.register_blueprint(main_bp)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Entry point for Vercel
+app = app
