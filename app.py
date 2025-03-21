@@ -6,7 +6,7 @@ from db import db
 from flask_migrate import Migrate
 from flask_login import LoginManager
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
@@ -23,11 +23,10 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Set the login view (optional but recommended)
 login_manager.login_view = "main_bp.login"
 
 # User loader function
-from models import User  # Import User model
+from models import User
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -38,5 +37,9 @@ migrate = Migrate(app, db)
 # Register the blueprint
 app.register_blueprint(main_bp)
 
-# Entry point for Vercel
-app = app
+# Vercel requires this to be named `handler`
+def handler(event, context):
+    return app(event, context)
+
+if __name__ == "__main__":
+    app.run(debug=True)
