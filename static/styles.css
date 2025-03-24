@@ -67,14 +67,20 @@ body {
 .header {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0);
-  padding: 10px;
+  padding: 50px;
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
   height: 80px;
+  align-items: center;
+}
+
+.side-header-content {
+  font-size: 24;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 /* --------------------------------- */
