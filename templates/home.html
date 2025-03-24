@@ -14,16 +14,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/Toastify.min.js"></script>
   </head>
   <body>
-    <div id="sidebar">
-      <button id="newchart">New Chat</button>
-      <ul id="chathistiry"></ul>
-      <button id="clearchat">Clear chat</button>
+    <div class="header">
+      <i class="fa-solid fa-sidebar"></i>
+      <i class="fa-solid fa-message-plus"></i>
+      <div class="profile-header">
+        <button id="user-profile-button" class="profile-button">BK</button>
+      </div>
     </div>
 
-    <div class="profile-header">
-      <button id="user-profile-button" class="profile-button">BK</button>
+    <!--side Header-->
+    <div class="side-header">
+      <div class="side-header-content">
+        <i class="fa-solid fa-sidebar"></i>
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" class="search-bar" placeholder="Search..." />
+      </div>
     </div>
 
+    <!--Main Content-->
     <div class="chat-container">
       <div class="chat-header">
         <h1>Bryium?</h1>
