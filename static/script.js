@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageContainer = document.getElementById("image-container");
   const sideHeader = document.getElementById("sideHeader");
   const sideHeaderBtn = document.getElementById("sideHeaderBtn");
-  const closeBtn = document.getElementById("sideHeaderBtn");
 
   if (!fileInput || !imageContainer) {
     console.error("fileInput or imageContainer element is missing.");
@@ -112,20 +111,23 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
-  // Toggle side header open/close
+  // Toggle side header open/close when the icon button is clicked
   sideHeaderBtn.addEventListener("click", () => {
-    sideHeader.classList.remove("open");
-
-    if (sideHeader.classList.contains("open")) {
-      sideHeaderBtn.title = "close side header";
+    // Check if the side header is currently hidden
+    if (sideHeader.style.display === "none") {
+      // If it's hidden, show it and add the open class to trigger the animation
+      sideHeader.style.display = "block";
+      setTimeout(() => {
+        sideHeader.classList.add("open");
+      }, 10); // Slight delay for smooth transition effect
+      sideHeaderBtn.title = "Close side header";
     } else {
-      sideHeaderBtn.title = "open side header";
+      // If it's open, hide it
+      sideHeader.classList.remove("open");
+      setTimeout(() => {
+        sideHeader.style.display = "none";
+      }, 0.3);
+      sideHeaderBtn.title = "Open side header";
     }
-  });
-
-  //  close side header when the close button is clicked
-  closeBtn.addEventListener("click", () => {
-    sideHeader.classList.remove("open");
-    sideHeaderBtn.title = "close side header";
   });
 });

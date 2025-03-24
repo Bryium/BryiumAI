@@ -91,12 +91,12 @@ body {
 .side-header {
   position: fixed;
   top: 0;
-  left: -250px;
+  left: 50px;
   width: 250px;
   height: 100%;
   background-color: #111;
   color: white;
-  transition: left 0.3s;
+  transition: left 0.3s ease-in-out;
   padding: 20px;
 }
 
