@@ -6,11 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
   const imageContainer = document.getElementById("image-container");
-  const toggleSidebarButton = document.getElementById("toggle-sidebar");
-  const savePromptButton = document.getElementById("save-prompt-button");
-  const promptList = document.getElementById("prompt-list");
-  const clearPromptsButton = document.getElementById("clear-prompts");
-  const sidebar = document.querySelector("sidebar");
+  const sideHeader = document.getElementById("sideHeader");
+  const sideHeaderBtn = document.getElementById("sideHeaderBtn");
+  const closeBtn = document.getElementById("sideHeaderBtn");
 
   if (!fileInput || !imageContainer) {
     console.error("fileInput or imageContainer element is missing.");
@@ -114,28 +112,20 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
+  // Toggle side header open/close
+  sideHeaderBtn.addEventListener("click", () => {
+    sideHeader.classList.remove("open");
 
-  // Toggle sidebar visibility
-  toggleSidebarButton.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-  });
-
-  // Save prompt to the sidebar
-  savePromptButton.addEventListener("click", () => {
-    const prompt = userInput.value.trim();
-    if (prompt) {
-      const listItem = document.createElement("li");
-      listItem.textContent = prompt;
-      listItem.addEventListener("click", () => {
-        userInput.value = listItem.textContent; // Load prompt into input
-      });
-      promptList.appendChild(listItem);
-      userInput.value = ""; // Clear input field
+    if (sideHeader.classList.contains("open")) {
+      sideHeaderBtn.title = "close side header";
+    } else {
+      sideHeaderBtn.title = "open side header";
     }
   });
 
-  // Clear all saved prompts
-  clearPromptsButton.addEventListener("click", () => {
-    promptList.innerHTML = "";
+  //  close side header when the close button is clicked
+  closeBtn.addEventListener("click", () => {
+    sideHeader.classList.remove("open");
+    sideHeaderBtn.title = "close side header";
   });
 });

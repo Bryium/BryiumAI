@@ -75,9 +75,13 @@ body {
   justify-content: flex-start;
   height: 80px;
   align-items: center;
-  cursor: pointer;
 }
 
+.header-home {
+  cursor: pointer;
+  gap: 50px;
+  display: flex;
+}
 .side-header-content {
   font-size: 24;
   cursor: pointer;
