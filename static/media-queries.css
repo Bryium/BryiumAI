@@ -248,3 +248,43 @@
     padding: 0.5rem 1rem;
   }
 }
+
+/* Profile Button */
+@media (max-width: 600px) {
+  .profile-header {
+    top: 10px;
+    right: 10px;
+  }
+
+  .profile-button {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .profile-header {
+    top: 15px;
+    right: 15px;
+  }
+
+  .profile-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .profile-header {
+    top: 20px;
+    right: 20px;
+  }
+
+  .profile-button {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}

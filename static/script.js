@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
   const imageContainer = document.getElementById("image-container");
+  const toggleSidebarButton = document.getElementById("toggle-sidebar");
+  const savePromptButton = document.getElementById("save-prompt-button");
+  const promptList = document.getElementById("prompt-list");
+  const clearPromptsButton = document.getElementById("clear-prompts");
+  const sidebar = document.querySelector("sidebar");
 
   if (!fileInput || !imageContainer) {
     console.error("fileInput or imageContainer element is missing.");
@@ -108,5 +113,29 @@ document.addEventListener("DOMContentLoaded", () => {
       // Read the file as a data URL (this will trigger the onload function)
       reader.readAsDataURL(file);
     }
+  });
+
+  // Toggle sidebar visibility
+  toggleSidebarButton.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+  });
+
+  // Save prompt to the sidebar
+  savePromptButton.addEventListener("click", () => {
+    const prompt = userInput.value.trim();
+    if (prompt) {
+      const listItem = document.createElement("li");
+      listItem.textContent = prompt;
+      listItem.addEventListener("click", () => {
+        userInput.value = listItem.textContent; // Load prompt into input
+      });
+      promptList.appendChild(listItem);
+      userInput.value = ""; // Clear input field
+    }
+  });
+
+  // Clear all saved prompts
+  clearPromptsButton.addEventListener("click", () => {
+    promptList.innerHTML = "";
   });
 });
