@@ -64,6 +64,18 @@ body {
 /* --------------------------------- */
 /* Sidebar Styles */
 /* --------------------------------- */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 10px;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  height: 80px;
+}
 
 /* --------------------------------- */
 /* Chat Interface Styles */
