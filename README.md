@@ -13,7 +13,7 @@ Bryium? is an intelligent, RAG-powered chatbot built with Flask for a robust bac
 
 # Installation
 # Clone the repository:
-git clone https://github.com/yourusername/BryiumAI.git
+git clone https://github.com/Bryium/BryiumAI
 cd bryiumai
 # Set up the Python environment: Create and activate a virtual environment (optional but recommended):
 python -m venv venv
