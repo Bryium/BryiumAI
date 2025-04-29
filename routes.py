@@ -1,12 +1,11 @@
 from flask import Blueprint, redirect, render_template, request, jsonify, url_for
 from datetime import datetime
 import os
-import requests  
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
 from models import db
 from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests 
+from google.auth.transport.requests import Request
 from dotenv import load_dotenv
 from conversation_history import get_conversation_history, update_conversation_history
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -44,47 +43,75 @@ def home():
 @main_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.get_json()
+        try:
+            data = request.get_json()
+            print("Received data:", data)
 
-        if 'email' in data and 'password' in data:  
-            email = data['email']
-            password = data['password']
+            # --- Traditional Email/Password Login ---
+            if 'email' in data and 'password' in data:
+                email = data['email']
+                password = data['password']
 
-            user = User.query.filter_by(email=email).first()
-
-            if user and check_password_hash(user.password, password):
-                login_user(user)
-                return jsonify({"success": True, "message": "Login successful"}), 200
-            else:
-                return jsonify({"success": False, "message": "Incorrect email or password"}), 400
-
-        elif 'token' in data:  # Google Sign-In
-            try:
-                token = data['token']
-                id_info = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
-
-                if id_info["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
-                    return jsonify({"success": False, "message": "Invalid token issuer"}), 400
-
-                email = id_info["email"]
-                name = id_info.get("name", "")
-                picture = id_info.get("picture", "")
-
-                # Check if user exists
                 user = User.query.filter_by(email=email).first()
-                if not user:
-                    # Create a new user
-                    user = User(email=email, name=name, profile_picture=picture)
-                    db.session.add(user)
-                    db.session.commit()
+                if user and check_password_hash(user.password, password):
+                    login_user(user)
+                    print("Traditional login successful for:", email)
+                    return jsonify({"success": True, "message": "Login successful"}), 200
+                else:
+                    print("Invalid credentials for:", email)
+                    return jsonify({"success": False, "message": "Incorrect email or password"}), 400
 
-                login_user(user)
-                return jsonify({"success": True, "message": "Google Sign-In successful"}), 200
+            # --- Google Sign-In Login ---
+            elif 'token' in data:
+                try:
+                    token = data['token']
+                    print("Received Google token:", token)
 
-            except Exception as e:
-                return jsonify({"success": False, "message": str(e)}), 400
+                    id_info = id_token.verify_oauth2_token(token, Request(), GOOGLE_CLIENT_ID)
+                    print("Verified ID token info:", id_info)
 
+                    if id_info["iss"] not in ["accounts.google.com", "https://accounts.google.com"]:
+                        print("Invalid token issuer:", id_info["iss"])
+                        return jsonify({"success": False, "message": "Invalid token issuer"}), 400
+
+                    email = id_info["email"]
+                    username = id_info.get("name", "")
+                    picture = id_info.get("picture", "")
+
+                    user = User.query.filter_by(email=email).first()
+                    if not user:
+                        user = User(email=email, username=username, profile_picture=picture)
+                        db.session.add(user)
+                        try:
+                            db.session.commit()
+                            print("New Google user created:", email)
+                        except Exception as db_error:
+                            db.session.rollback()
+                            print("DB error while creating user:", db_error)
+                            return jsonify({"success": False, "message": "Database error"}), 400
+                    else:
+                        print("Existing Google user logged in:", email)
+
+                    login_user(user)
+                    return jsonify({"success": True, "message": "Google Sign-In successful"}), 200
+
+                except Exception as e:
+                    print("Google Sign-In error:", e)
+                    return jsonify({"success": False, "message": str(e)}), 400
+
+            else:
+                print("Missing credentials in request.")
+                return jsonify({"success": False, "message": "Missing login credentials"}), 400
+
+        except Exception as outer_error:
+            print("Unexpected POST error:", outer_error)
+            return jsonify({"success": False, "message": "Something went wrong"}), 500
+
+    # If GET method
     return render_template('login.html')
+
+
+
 
 @main_bp.route('/register', methods=['GET', 'POST'])
 def register():

@@ -9,8 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const sideHeader = document.getElementById("sideHeader");
   const sideHeaderBtn = document.getElementById("sideHeaderBtn");
 
-  if (!fileInput || !imageContainer) {
-    console.error("fileInput or imageContainer element is missing.");
+  // Check if required elements exist before proceeding
+  if (
+    !chatBox ||
+    !userInput ||
+    !sendButton ||
+    !cameraButton ||
+    !galleryButton ||
+    !fileInput ||
+    !imageContainer
+  ) {
+    console.error("One or more required elements are missing.");
     return;
   }
 
@@ -20,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const image = imageContainer.querySelector("img");
 
     if (message || image) {
-      // Send either a message or image
       const combinedMessage = message + (image ? "<br>" + image.outerHTML : "");
       appendUserMessage(combinedMessage);
       userInput.value = "";
@@ -75,14 +83,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle camera input (opens the camera to capture an image)
   cameraButton.addEventListener("click", () => {
-    fileInput.accept = "image/*";
-    fileInput.capture = "camera";
-    fileInput.click();
+    try {
+      fileInput.accept = "image/*";
+      fileInput.capture = "camera";
+      fileInput.click();
+    } catch (error) {
+      console.error("Camera access failed:", error);
+    }
   });
 
   // Handle gallery input (opens the file gallery to select an image)
   galleryButton.addEventListener("click", () => {
-    fileInput.accept = "gallery/*";
+    fileInput.accept = "image/*"; // Fixed incorrect "gallery/*" value
     fileInput.capture = "";
     fileInput.click();
   });
@@ -94,6 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const reader = new FileReader();
 
       reader.onload = function (e) {
+        if (!e.target.result) {
+          console.error("Error loading image");
+          return;
+        }
+
         // Create an image element to display the image
         const img = document.createElement("img");
         img.src = e.target.result;
@@ -109,25 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Read the file as a data URL (this will trigger the onload function)
       reader.readAsDataURL(file);
-    }
-  });
-  // Toggle side header open/close when the icon button is clicked
-  sideHeaderBtn.addEventListener("click", () => {
-    // Check if the side header is currently hidden
-    if (sideHeader.style.display === "none") {
-      // If it's hidden, show it and add the open class to trigger the animation
-      sideHeader.style.display = "block";
-      setTimeout(() => {
-        sideHeader.classList.add("open");
-      }, 10); // Slight delay for smooth transition effect
-      sideHeaderBtn.title = "Close side header";
-    } else {
-      // If it's open, hide it
-      sideHeader.classList.remove("open");
-      setTimeout(() => {
-        sideHeader.style.display = "none";
-      }, 0.3);
-      sideHeaderBtn.title = "Open side header";
     }
   });
 });
