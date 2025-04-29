@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageContainer = document.getElementById("image-container");
   const sideHeader = document.getElementById("sideHeader");
   const sideHeaderBtn = document.getElementById("sideHeaderBtn");
+  const button = document.getElementById("user-profile-button");
+  const dropdown = document.getElementById("profile-dropdown");
 
   // Check if required elements exist before proceeding
   if (
@@ -66,11 +68,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to append bot message to chat
   function appendBotMessage(message) {
-    const botMessageHTML = `<div class="chat-message bot-message">${formatBotResponse(
-      message
-    )}</div>`;
-    chatBox.innerHTML += botMessageHTML;
-    chatBox.scrollTop = chatBox.scrollHeight;
+    const botMessageElement = document.createElement("div");
+    botMessageElement.className = "chat-message bot-message";
+    chatBox.appendChild(botMessageElement);
+
+    let index = 0;
+
+    function typeCharacter() {
+      if (index < message.length) {
+        botMessageElement.innerHTML += message.charAt(index);
+        index++;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        setTimeout(typeCharacter, 20);
+      }
+    }
+
+    typeCharacter();
   }
 
   // Function to format bot response (optional)

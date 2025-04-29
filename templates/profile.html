@@ -1,0 +1,48 @@
+<!-- templates/profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Profile</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="profile-header">
+      <button id="user-profile-button" class="profile-button">
+        <span id="user-avatar">
+          {% if user.profile_picture and user.signedInWithGoogle %}
+          <img
+            src="{{ user.profile_picture }}"
+            class="w-10 h-10 rounded-full"
+            alt="Profile Picture"
+          />
+          {% else %} {{ user.username[:2]|upper }} {% endif %}
+        </span>
+      </button>
+
+      <div id="profile-dropdown" class="profile-dropdown hidden">
+        <div class="profile-info">
+          <p id="profile-name">{{ user.username }}</p>
+          <p id="profile-email">{{ user.email }}</p>
+        </div>
+        <button id="logout-button" class="logout-button">Logout</button>
+      </div>
+    </div>
+
+    <script>
+      const button = document.getElementById("user-profile-button");
+      const dropdown = document.getElementById("profile-dropdown");
+
+      button.addEventListener("click", () => {
+        dropdown.classList.toggle("hidden");
+      });
+
+      document.getElementById("logout-button").addEventListener("click", () => {
+        window.location.href = "/logout";
+      });
+    </script>
+  </body>
+</html>

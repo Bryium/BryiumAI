@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
+import requests
 from models import db
 from google.oauth2 import id_token
 from google.auth.transport.requests import Request
