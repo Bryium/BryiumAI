@@ -152,6 +152,8 @@ def check_email():
         return jsonify({"exists": True}), 200
     return jsonify({"exists": False}), 200
 
+
+
 @main_bp.route('/chat', methods=['POST'])
 def get_response():
     user_message = request.json.get('message', '').strip()
