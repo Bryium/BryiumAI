@@ -37,8 +37,6 @@ migrate = Migrate(app, db)
 # Register the blueprint
 app.register_blueprint(main_bp)
 
-# Vercel requires this to be named `handler`
-def handler(event, context):
-    return app(event, context)
+
 
 
