@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, jsonify, url_for
 from datetime import datetime
 import os
+import nltk
 from bs4 import BeautifulSoup
 from nltk.tokenize import word_tokenize
 import requests
@@ -12,6 +13,11 @@ from conversation_history import get_conversation_history, update_conversation_h
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 from flask_login import login_user
+
+
+# Append local nltk_data path
+nltk_path = os.path.join(os.path.dirname(__file__), 'nltk_data')
+nltk.data.path.append(nltk_path)
 
 
 # Load environment variables from .env file
