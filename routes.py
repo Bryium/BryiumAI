@@ -17,6 +17,13 @@ from flask_login import login_user
 nltk_path = os.path.join(os.path.dirname(__file__), 'nltk_data')
 nltk.data.path.append(nltk_path)
 
+# Ensure the punkt tokenizer is downloaded
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    
+    pass
+
 load_dotenv()
 
 main_bp = Blueprint('main', __name__)
