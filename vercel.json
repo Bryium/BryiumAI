@@ -3,16 +3,8 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": {
-        "includeFiles": ["nltk_data/**"]
-      }
+      "use": "@vercel/python"
     }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "app.py" }],
-  "build": {
-    "env": {
-      "NLTK_DATA": "./nltk_data"
-    }
-  }
+  "routes": [{ "src": "/(.*)", "dest": "app.py" }]
 }

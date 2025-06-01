@@ -14,8 +14,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
 from flask_login import login_user
 
-nltk_path = os.path.join(os.path.dirname(__file__), 'nltk_data')
-nltk.data.path.append(nltk_path)
+# NLTK Setup for Vercel
+nltk_data_path = '/tmp/nltk_data'
+os.makedirs(nltk_data_path, exist_ok=True)
+nltk.download('punkt', download_dir=nltk_data_path)
+nltk.download('punkt_tab', download_dir=nltk_data_path)
+nltk.data.path.append(nltk_data_path)
 
 # Ensure the punkt tokenizer is downloaded
 try:
