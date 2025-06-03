@@ -76,7 +76,6 @@ body {
   cursor: pointer;
 }
 
-
 .profile-button:hover {
   background-color: #0056b3;
   transform: scale(1.1);
@@ -158,6 +157,31 @@ body {
   width: auto;
 }
 
+.header-login {
+  position: absolute;
+  z-index: 9999;
+  right: 20px;
+  top: 14px;
+  height: 34px;
+  width: 34px;
+  border-radius: 5px;
+  background: linear-gradient(-120deg, #000f33, #002e99);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  padding-top: 7px;
+  cursor: pointer;
+}
+
+.header-login div {
+  margin-top: 1px;
+  height: 2px;
+  width: 85%;
+  background-color: #6694ff;
+  margin-bottom: 5px;
+}
 .auth-buttons .auth-btn {
   background-color: #007bff;
   color: white;
