@@ -6,10 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const galleryButton = document.getElementById("gallery-button");
   const fileInput = document.getElementById("file-input");
   const imageContainer = document.getElementById("image-container");
-  const sideHeader = document.getElementById("sideHeader");
-  const sideHeaderBtn = document.getElementById("sideHeaderBtn");
-  const button = document.getElementById("user-profile-button");
-  const dropdown = document.getElementById("profile-dropdown");
+  const toggle = document.getElementById("toggle");
+  const menu = document.getElementById("menu");
+  const closeBtn = document.getElementById("close");
 
   // Check if required elements exist before proceeding
   if (
@@ -19,11 +18,23 @@ document.addEventListener("DOMContentLoaded", () => {
     !cameraButton ||
     !galleryButton ||
     !fileInput ||
-    !imageContainer
+    !imageContainer ||
+    !toggle ||
+    !menu ||
+    !closeBtn
   ) {
     console.error("One or more required elements are missing.");
     return;
   }
+  //open menu when toggle is clicked
+  toggle.addEventListener("click", () => {
+    menu.style.display = "block";
+  });
+
+  // Close menu when close button is clicked
+  closeBtn.addEventListener("click", () => {
+    menu.style.display = "none";
+  });
 
   // Handle send button click
   sendButton.addEventListener("click", () => {
@@ -142,5 +153,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-

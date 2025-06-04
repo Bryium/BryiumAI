@@ -40,6 +40,12 @@
   }
 }
 
+@media screen and (max-width: 900px) {
+  body .menu {
+    width: 55%;
+  }
+}
+
 /* Chat Interface Media Queries */
 @media (max-width: 600px) {
   .chat-container {

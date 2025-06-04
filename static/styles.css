@@ -25,124 +25,10 @@ body {
 /* --------------------------------- */
 /* Button Profile */
 /* --------------------------------- */
-.profile-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.profile-popup {
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 200px;
-  z-index: 10;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.hidden {
-  display: none;
-}
-
-.profile-pic {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-.logout-button {
-  margin-top: 15px;
-  width: 100%;
-  padding: 8px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.profile-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.1);
-}
-
-.profile-button img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.profile-header {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-}
 
 /* --------------------------------- */
 /* Sidebar Styles */
 /* --------------------------------- */
-.header {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0);
-  padding: 0 50px;
-  z-index: 1000;
-  display: flex;
-  justify-content: flex-start;
-  height: 80px;
-  align-items: center;
-}
-
-.header-home {
-  cursor: pointer;
-  gap: 50px;
-  display: flex;
-}
-.side-header-content {
-  font-size: 24;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.side-header {
-  position: fixed;
-  top: 0;
-  left: 50px;
-  width: 250px;
-  height: 100%;
-  background-color: #111;
-  color: white;
-  transition: left 0.3s ease-in-out;
-  padding: 20px;
-}
-
-.side-header.open {
-  left: 0;
-}
-
-.side-header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 /* --------------------------------- */
 /* Chat Interface Styles */
@@ -182,6 +68,78 @@ body {
   background-color: #6694ff;
   margin-bottom: 5px;
 }
+
+.menu {
+  display: none;
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 10px;
+  width: 40vw;
+  height: 30vh;
+  position: fixed;
+  padding: 1%;
+  background: rgba(0, 3, 10, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: 999;
+  animation-delay: 0.2s;
+  animation: slideIn 1s ease-in forwards 1;
+}
+
+@keyframes slideIn {
+  from {
+    right: -50px;
+    opacity: 0.5;
+  }
+  to {
+    right: 0;
+    opacity: 1;
+  }
+}
+
+.menu span {
+  position: relative;
+  top: 0;
+  left: 25px;
+  font-size: 20px;
+  color: #6694ff;
+  cursor: pointer;
+  background: linear-gradient(-120deg, #000f33, #000f33);
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu ul {
+  position: relative;
+  top: 50px;
+  left: 1px;
+  width: 90%;
+  margin: 0 auto;
+  list-style: none;
+  padding: 10px;
+}
+
+.menu ul li {
+  margin-bottom: 25px;
+  padding: 10px 0 0 0;
+  align-items: flex-start;
+}
+.menu ul li a {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #000f33;
+  transition: background-color 0.3s ease;
+}
+
 .auth-buttons .auth-btn {
   background-color: #007bff;
   color: white;
