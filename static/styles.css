@@ -194,7 +194,7 @@ body {
   height: 30vh;
   position: fixed;
   padding: 1%;
-  background: rgba(0, 3, 10, 0.9);
+  background: linear-gradient(145deg, #181818, #232323);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   z-index: 999;
@@ -272,6 +272,7 @@ body {
   transform: translateY(-2px);
 }
 
+/* Chat Container */
 .chat-container {
   background-color: #1f1f1f;
   border-radius: 20px;
@@ -406,6 +407,86 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* the camera and login buttons */
+.chat-input-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-header-chat {
+  display: none;
+}
+
+.menu-chat {
+  display: none;
+  position: absolute;
+  opacity: 0;
+  bottom: 10px;
+  width: 20vw;
+  height: 20vh;
+  position: fixed;
+  padding: 1%;
+  background: linear-gradient(145deg, #181818, #232323);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: 999;
+  animation-delay: 0.2s;
+  animation: slideIn 1s ease-in forwards 1;
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -50px;
+    opacity: 0.5;
+  }
+  to {
+    bottom: 10px;
+    opacity: 1;
+  }
+}
+
+.menu-chat span {
+  position: relative;
+  top: 0;
+  left: 25px;
+  font-size: 20px;
+  color: #6694ff;
+  cursor: pointer;
+  background: linear-gradient(-120deg, #000f33, #000f33);
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-chat ul {
+  position: relative;
+  top: 5px;
+  left: 1px;
+  width: 90%;
+  margin: 0 auto;
+  list-style: none;
+  padding: 10px;
+}
+
+.menu-chat ul li {
+  margin-bottom: 25px;
+  padding: 10px 0 0 0;
+  align-items: flex-start;
+}
+.menu-chat ul li a {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #000f33;
+  transition: background-color 0.3s ease;
 }
 
 /* --------------------------------- */

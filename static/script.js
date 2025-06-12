@@ -4,11 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const cameraButton = document.getElementById("camera-button");
   const galleryButton = document.getElementById("gallery-button");
+  const cameraButtonMobile = document.getElementById("camera-button-mobile");
+  const galleryButtonMobile = document.getElementById("gallery-button-mobile");
   const fileInput = document.getElementById("file-input");
   const imageContainer = document.getElementById("image-container");
   const toggle = document.getElementById("toggle");
   const menu = document.getElementById("menu");
   const closeBtn = document.getElementById("close");
+  const closeChat = document.getElementById("close-chat");
+  const menuChat = document.getElementById("menu-chat");
+  const toggleChat = document.getElementById("toggle-chat");
 
   // Check if required elements exist before proceeding
   if (
@@ -21,7 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     !imageContainer ||
     !toggle ||
     !menu ||
-    !closeBtn
+    !closeBtn ||
+    !menuChat ||
+    !closeChat ||
+    !toggleChat
   ) {
     console.error("One or more required elements are missing.");
     return;
@@ -34,6 +42,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Close menu when close button is clicked
   closeBtn.addEventListener("click", () => {
     menu.style.display = "none";
+  });
+
+  //open menu chat  when toggle is clicked
+  toggleChat.addEventListener("click", () => {
+    menuChat.style.display = "block";
+  });
+
+  //close menu chat when close button is clicked
+  closeChat.addEventListener("click", () => {
+    menuChat.style.display = "none";
   });
 
   // Handle send button click
@@ -105,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/\n/g, "<br>");
   }
 
-  // Handle camera input (opens the camera to capture an image)
+  // Desktop Camera
   cameraButton.addEventListener("click", () => {
     try {
       fileInput.accept = "image/*";
@@ -116,9 +134,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle gallery input (opens the file gallery to select an image)
+  //  Desktop gallery
   galleryButton.addEventListener("click", () => {
-    fileInput.accept = "image/*"; // Fixed incorrect "gallery/*" value
+    fileInput.accept = "image/*";
+    fileInput.capture = "";
+    fileInput.click();
+  });
+
+  // Mobile Gallery
+  cameraButtonMobile.addEventListener("click", () => {
+    e.preventDefault();
+    try {
+      fileInput.accept = "image/*";
+      fileInput.capture = "camera";
+      fileInput.click();
+    } catch (error) {
+      console.error("Camera access failed:", error);
+    }
+  });
+
+  // Handle gallery input (opens the file gallery to select an image) for Mobile screens
+  galleryButtonMobile.addEventListener("click", () => {
+    e.preventDefault();
+    fileInput.accept = "image/*";
     fileInput.capture = "";
     fileInput.click();
   });

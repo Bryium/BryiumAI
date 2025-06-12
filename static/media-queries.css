@@ -98,6 +98,17 @@
     top: 10px;
     right: 10px;
   }
+
+  .chat-input-buttons {
+    display: none;
+  }
+
+  .menu-header-chat {
+    display: flex;
+    margin-right: 15px;
+    cursor: pointer;
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 400px) {

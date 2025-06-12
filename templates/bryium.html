@@ -7,7 +7,14 @@
     <link rel="stylesheet" href="/static/styles.css" />
     <link rel="stylesheet" href="/static/media-queries.css" />
 
+    <!-- Toastify -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/Toastify.min.js"></script>
+
+    <!-- Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/7427371865.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <!-- Top-right buttons -->
@@ -28,34 +35,50 @@
       </ul>
     </div>
 
+    <!-- Chat-Container -->
     <div class="chat-container">
       <div class="chat-header">
         <h1>Bryium?</h1>
       </div>
+
       <div class="chat-box" id="chat-box">
         <div class="static-message">
           Hey, I'm Bryium. How may I help you today?
         </div>
       </div>
+
       <div class="chat-input-container">
-        <input
-          type="file"
-          id="file-input"
-          accept="image/*"
-          capture="camera"
-          style="display: none"
-        />
-        <button id="camera-button">📷</button>
-        <button id="gallery-button">🖼️</button>
+        <div class="chat-input-buttons">
+          <input
+            type="file"
+            id="file-input"
+            accept="image/*"
+            capture="camera"
+            style="display: none"
+          />
+          <button id="camera-button">📷</button>
+          <button id="gallery-button">🖼️</button>
+        </div>
+
+        <!-- For smaller screens -->
+        <div class="menu-header-chat" id="toggle-chat">
+          <i class="fa-solid fa-plus fa-beat"></i>
+        </div>
+        <div class="menu-chat" id="menu-chat">
+          <span id="close-chat"> &times;</span>
+          <ul>
+            <li><a href="#" id="camera-button-mobile">📷</a></li>
+            <li><a href="#" id="gallery-button-mobile">🖼️</a></li>
+          </ul>
+        </div>
         <input
           type="text"
           id="user-input"
-          placeholder="Type your message here..."
+          placeholder="Ask Bryium anything..."
         />
         <button id="send-button">Send</button>
       </div>
       <div id="image-container"></div>
-      <!-- Container for displaying uploaded image -->
     </div>
 
     <!-- Script for Toastify flashing messages -->
