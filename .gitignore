@@ -1,9 +1,9 @@
 # Ignore virtual envirnoment
-env/
+backend/env/
 
 # ignore .env
-.env
+backend/.env
 
 # Ignore pycache folder
-__pycache__/
+backend/__pycache__/
 .qodo

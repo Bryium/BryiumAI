@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatBox = document.getElementById("chat-box");
   const sendButton = document.getElementById("send-button");
   const userInput = document.getElementById("user-input");
+  const video = document.getElementById("camera-preview");
   const cameraButton = document.getElementById("camera-button");
   const galleryButton = document.getElementById("gallery-button");
   const cameraButtonMobile = document.getElementById("camera-button-mobile");
@@ -124,11 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Desktop Camera
-  cameraButton.addEventListener("click", () => {
+  cameraButton.addEventListener("click", async () => {
     try {
-      fileInput.accept = "image/*";
-      fileInput.capture = "camera";
-      fileInput.click();
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
     } catch (error) {
       console.error("Camera access failed:", error);
     }
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //  Desktop gallery
   galleryButton.addEventListener("click", () => {
     fileInput.accept = "image/*";
-    fileInput.capture = "";
+    fileInput.removeAttribute("capture");
     fileInput.click();
   });
 
