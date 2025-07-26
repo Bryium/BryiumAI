@@ -1,9 +1,17 @@
-export default function App() {
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">
-        Hello, My name is Bryium Onayncha a senior software engineer
-      </h1>
-    </div>
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import WelcomeScreen from "./pages/WelcomeScreen";
+import LoginScreen from "./pages/LoginScreen";
+
+function App() {
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  return showWelcome ? (
+    <WelcomeScreen onFinish={() => setShowWelcome(false)} />
+  ) : (
+    <LoginScreen />
   );
 }
+
+export default App;
