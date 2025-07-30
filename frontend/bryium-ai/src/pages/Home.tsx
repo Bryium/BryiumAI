@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [chatMenuOpen, setChatMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const hasShownToast = localStorage.getItem("welcomeToastShown");
@@ -29,18 +31,18 @@ export default function Home() {
     <div className="relative min-h-screen bg-[#121212] text-[#e0e0e0] flex items-center justify-center">
       {/* Auth Buttons - Top Right Outside Container */}
       <div className="absolute top-4 right-4 flex gap-3 z-50">
-        <a
-          href="/login"
+        <button
+          onClick={() => navigate("/login", { state: { from: "/" } })}
           className="hidden md:inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md"
         >
           Login
-        </a>
-        <a
-          href="/register"
+        </button>
+        <button
+          onClick={() => navigate("/register", { state: { from: "/" } })}
           className="hidden md:inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md"
         >
           Register
-        </a>
+        </button>
 
         {/* Hamburger Menu - Only visible on mobile */}
         <div
@@ -58,20 +60,26 @@ export default function Home() {
         <div className="absolute top-14 right-4 w-[20vw] bg-[#1f1f1f] p-4 rounded-lg z-50 shadow-md">
           <ul className="space-y-3">
             <li>
-              <a
-                href="/login"
-                className="text-white bg-[#000f33] px-4 py-2 rounded-md block"
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/login", { state: { from: "/" } });
+                }}
+                className="text-white bg-[#000f33] px-4 py-2 rounded-md w-full text-left"
               >
                 Login
-              </a>
+              </button>
             </li>
             <li>
-              <a
-                href="/register"
-                className="text-white bg-[#000f33] px-4 py-2 rounded-md block"
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/register", { state: { from: "/" } });
+                }}
+                className="text-white bg-[#000f33] px-4 py-2 rounded-md w-full text-left"
               >
                 Register
-              </a>
+              </button>
             </li>
           </ul>
         </div>
