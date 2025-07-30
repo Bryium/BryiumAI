@@ -55,7 +55,7 @@ export default function Home() {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-14 right-4 w-[60vw] bg-[#1f1f1f] p-4 rounded-lg z-50 shadow-md">
+        <div className="absolute top-14 right-4 w-[20vw] bg-[#1f1f1f] p-4 rounded-lg z-50 shadow-md">
           <ul className="space-y-3">
             <li>
               <a
