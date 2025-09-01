@@ -13,6 +13,7 @@ import WelcomeScreen from "./pages/WelcomeScreen";
 import HomeScreen from "./pages/Home";
 import LoginForm from "./pages/Login";
 import RegisterForm from "./pages/Register";
+import Chat from "./pages/Chat";
 
 function RoutesWithWelcome() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function RoutesWithWelcome() {
   return (
     <Routes>
       <Route path="/" element={<HomeScreen />} />
+      <Route path="/chat" element={<Chat />} />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<RegisterForm />} />
     </Routes>
